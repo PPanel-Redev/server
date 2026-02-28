@@ -147,7 +147,7 @@
 
 ## 4. 获取收款方式列表
 
-**GET** `/v1/admin/paymentReceived/list`
+**GET** `/v1/admin/paymentReceived/`
 
 ### 请求参数
 

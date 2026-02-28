@@ -34,10 +34,14 @@ func (l *CreatePaymentReceivedLogic) CreatePaymentReceived(req *types.CreatePaym
 		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidAccess), "Invalid Access")
 	}
 	userId := u.Id
+	// 校验收款人姓名
+	if req.ReceivedName == "" {
+		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "received_name is required")
+	}
 	// 根据收款方式类型进行校验
 	switch req.ReceivedType {
 	case paymentreceived.ReceivedTypeBankcard:
-		// 银行卡：received_no 和 bank_name 必填，qrcode 不需要填写
+		// 银行卡：received_no 和 bank_name 必填，qrcode 选填
 		if req.ReceivedNo == "" {
 			return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "received_no is required for bankcard")
 		}
@@ -45,12 +49,9 @@ func (l *CreatePaymentReceivedLogic) CreatePaymentReceived(req *types.CreatePaym
 			return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "bank_name is required for bankcard")
 		}
 	case paymentreceived.ReceivedTypeWeixin, paymentreceived.ReceivedTypeAlipay:
-		// 微信/支付宝：received_no 和 qrcode 必填，bank_name 和 opening_branch 不需要填写
+		// 微信/支付宝：received_no 必填，qrcode 选填，bank_name 和 opening_branch 不需要填写
 		if req.ReceivedNo == "" {
 			return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "received_no is required")
-		}
-		if req.Qrcode == "" {
-			return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "qrcode is required for weixin/alipay")
 		}
 	default:
 		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "invalid received_type: %s", req.ReceivedType)
@@ -59,6 +60,7 @@ func (l *CreatePaymentReceivedLogic) CreatePaymentReceived(req *types.CreatePaym
 	// 创建收款方式记录
 	data := &paymentreceived.PaymentReceived{
 		UserId:        userId,
+		ReceivedName:  req.ReceivedName,
 		ReceivedType:  req.ReceivedType,
 		ReceivedNo:    req.ReceivedNo,
 		BankName:      req.BankName,

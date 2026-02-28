@@ -30,6 +30,8 @@ type (
 
 	customPaymentReceivedLogicModel interface {
 		FindListByUserId(ctx context.Context, userId int64) ([]*PaymentReceived, error)
+		FindListByUserIdAndType(ctx context.Context, userId int64, receivedType string) ([]*PaymentReceived, error)
+		QueryListByPage(ctx context.Context, page, size int, userId int64, receivedType string) (int64, []*PaymentReceived, error)
 	}
 
 	customPaymentReceivedModel struct {
@@ -123,4 +125,32 @@ func (m *customPaymentReceivedModel) FindListByUserId(ctx context.Context, userI
 		return conn.Where("`user_id` = ?", userId).Find(v).Error
 	})
 	return resp, err
+}
+
+func (m *customPaymentReceivedModel) FindListByUserIdAndType(ctx context.Context, userId int64, receivedType string) ([]*PaymentReceived, error) {
+	var resp []*PaymentReceived
+	err := m.QueryNoCacheCtx(ctx, &resp, func(conn *gorm.DB, v interface{}) error {
+		db := conn.Where("`user_id` = ?", userId)
+		if receivedType != "" {
+			db = db.Where("`received_type` = ?", receivedType)
+		}
+		return db.Find(v).Error
+	})
+	return resp, err
+}
+
+func (m *customPaymentReceivedModel) QueryListByPage(ctx context.Context, page, size int, userId int64, receivedType string) (int64, []*PaymentReceived, error) {
+	var list []*PaymentReceived
+	var total int64
+	err := m.QueryNoCacheCtx(ctx, &list, func(conn *gorm.DB, v interface{}) error {
+		conn = conn.Model(&PaymentReceived{})
+		if userId > 0 {
+			conn = conn.Where("user_id = ?", userId)
+		}
+		if receivedType != "" {
+			conn = conn.Where("received_type = ?", receivedType)
+		}
+		return conn.Order("id desc").Count(&total).Offset((page - 1) * size).Limit(size).Find(v).Error
+	})
+	return total, list, err
 }

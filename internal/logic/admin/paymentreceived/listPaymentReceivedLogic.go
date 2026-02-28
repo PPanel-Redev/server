@@ -46,6 +46,7 @@ func (l *ListPaymentReceivedLogic) ListPaymentReceived() (*types.GetPaymentRecei
 		resp.List = append(resp.List, types.PaymentReceived{
 			Id:            item.Id,
 			UserId:        item.UserId,
+			ReceivedName:  item.ReceivedName,
 			ReceivedType:  item.ReceivedType,
 			ReceivedNo:    item.ReceivedNo,
 			BankName:      item.BankName,

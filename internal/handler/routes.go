@@ -283,7 +283,14 @@ func RegisterHandlers(router *gin.Engine, serverCtx *svc.ServiceContext) {
 	adminPaymentReceivedRouter.Use(middleware.AuthMiddleware(serverCtx))
 
 	{
-		// Create order
+		// Get user payment received
+		adminPaymentReceivedRouter.GET("/page", paymentreceived.GetUserPaymentReceivedHandler(serverCtx))
+	}
+
+	userPaymentReceivedRouter := router.Group("/v1/user/paymentReceived")
+	userPaymentReceivedRouter.Use(middleware.AuthMiddleware(serverCtx))
+
+	{
 		adminPaymentReceivedRouter.POST("/", paymentreceived.CreatePaymentReceivedHandler(serverCtx))
 
 		adminPaymentReceivedRouter.POST("/del", paymentreceived.DeletePaymentReceivedHandler(serverCtx))

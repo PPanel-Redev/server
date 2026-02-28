@@ -50,6 +50,11 @@ func (l *UpdatePaymentReceivedLogic) UpdatePaymentReceived(req *types.UpdatePaym
 		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "payment received not found")
 	}
 
+	// 校验收款人姓名
+	if req.ReceivedName == "" {
+		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "received_name is required")
+	}
+
 	// 根据收款方式类型进行校验
 	switch req.ReceivedType {
 	case paymentreceived.ReceivedTypeBankcard:
@@ -63,15 +68,13 @@ func (l *UpdatePaymentReceivedLogic) UpdatePaymentReceived(req *types.UpdatePaym
 		if req.ReceivedNo == "" {
 			return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "received_no is required")
 		}
-		if req.Qrcode == "" {
-			return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "qrcode is required for weixin/alipay")
-		}
 	default:
 		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "invalid received_type: %s", req.ReceivedType)
 	}
 
 	// 更新收款方式记录
 	now := time.Now()
+	data.ReceivedName = req.ReceivedName
 	data.ReceivedType = req.ReceivedType
 	data.ReceivedNo = req.ReceivedNo
 	data.BankName = req.BankName

@@ -10,6 +10,7 @@ import (
 type PaymentReceived struct {
 	Id            int64                 `gorm:"primaryKey"`
 	UserId        int64                 `gorm:"type:bigint;not null;comment:用户id"`
+	ReceivedName  string                `gorm:"type:varchar(100);not null;comment:收款人姓名"`
 	ReceivedType  string                `gorm:"type:varchar(20);not null;comment:收款方式;weixin-微信;alipay-支付宝;bankcard-银行卡"`
 	ReceivedNo    string                `gorm:"type:varchar(200);not null;comment:收款账号/银行账号/卡号"`
 	BankName      string                `gorm:"type:varchar(200);comment:银行名称"`

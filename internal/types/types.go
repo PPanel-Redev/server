@@ -2812,6 +2812,7 @@ type WithdrawalLog struct {
 type PaymentReceived struct {
 	Id            int64  `json:"id"`
 	UserId        int64  `json:"user_id"`
+	ReceivedName  string `json:"received_name"`
 	ReceivedType  string `json:"received_type"`
 	ReceivedNo    string `json:"received_no"`
 	BankName      string `json:"bank_name,omitempty"`
@@ -2823,6 +2824,7 @@ type PaymentReceived struct {
 
 // CreatePaymentReceivedRequest 添加收款方式请求
 type CreatePaymentReceivedRequest struct {
+	ReceivedName  string `json:"received_name" validate:"required"`
 	ReceivedType  string `json:"received_type" validate:"required,oneof=weixin alipay bankcard"`
 	ReceivedNo    string `json:"received_no" validate:"required"`
 	BankName      string `json:"bank_name,omitempty"`
@@ -2833,6 +2835,7 @@ type CreatePaymentReceivedRequest struct {
 // UpdatePaymentReceivedRequest 修改收款方式请求
 type UpdatePaymentReceivedRequest struct {
 	Id            int64  `json:"id" validate:"required"`
+	ReceivedName  string `json:"received_name" validate:"required"`
 	ReceivedType  string `json:"received_type" validate:"required,oneof=weixin alipay bankcard"`
 	ReceivedNo    string `json:"received_no" validate:"required"`
 	BankName      string `json:"bank_name,omitempty"`
@@ -2859,4 +2862,18 @@ type PaymentReceivedByType struct {
 // GetPaymentReceivedByTypeResponse 按类型分组查询收款方式响应
 type GetPaymentReceivedByTypeResponse struct {
 	ReceivedType []PaymentReceivedByType `json:"received_type"`
+}
+
+// GetUserPaymentReceivedRequest 查询用户收款方式请求
+type GetUserPaymentReceivedRequest struct {
+	Page         int64  `form:"page" validate:"required"`
+	Size         int64  `form:"size" validate:"required"`
+	UserId       int64  `form:"user_id,omitempty"`
+	ReceivedType string `form:"received_type,omitempty"`
+}
+
+// GetUserPaymentReceivedResponse 查询用户收款方式响应
+type GetUserPaymentReceivedResponse struct {
+	Total int64             `json:"total"`
+	List  []PaymentReceived `json:"list"`
 }

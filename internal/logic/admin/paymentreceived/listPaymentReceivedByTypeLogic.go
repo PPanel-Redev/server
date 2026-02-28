@@ -44,6 +44,7 @@ func (l *ListPaymentReceivedByTypeLogic) ListPaymentReceivedByType() (*types.Get
 		payment := types.PaymentReceived{
 			Id:            item.Id,
 			UserId:        item.UserId,
+			ReceivedName:  item.ReceivedName,
 			ReceivedType:  item.ReceivedType,
 			ReceivedNo:    item.ReceivedNo,
 			BankName:      item.BankName,

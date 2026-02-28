@@ -291,15 +291,15 @@ func RegisterHandlers(router *gin.Engine, serverCtx *svc.ServiceContext) {
 	userPaymentReceivedRouter.Use(middleware.AuthMiddleware(serverCtx))
 
 	{
-		adminPaymentReceivedRouter.POST("/", paymentreceived.CreatePaymentReceivedHandler(serverCtx))
+		userPaymentReceivedRouter.POST("/", paymentreceived.CreatePaymentReceivedHandler(serverCtx))
 
-		adminPaymentReceivedRouter.POST("/del", paymentreceived.DeletePaymentReceivedHandler(serverCtx))
+		userPaymentReceivedRouter.POST("/del", paymentreceived.DeletePaymentReceivedHandler(serverCtx))
 
-		adminPaymentReceivedRouter.PUT("/", paymentreceived.UpdatePaymentReceivedHandler(serverCtx))
+		userPaymentReceivedRouter.PUT("/", paymentreceived.UpdatePaymentReceivedHandler(serverCtx))
 
-		adminPaymentReceivedRouter.GET("/list", paymentreceived.ListPaymentReceivedHandler(serverCtx))
+		userPaymentReceivedRouter.GET("/list", paymentreceived.ListPaymentReceivedHandler(serverCtx))
 
-		adminPaymentReceivedRouter.GET("/listByType", paymentreceived.ListPaymentReceivedByTypeHandler(serverCtx))
+		userPaymentReceivedRouter.GET("/listByType", paymentreceived.ListPaymentReceivedByTypeHandler(serverCtx))
 	}
 
 	adminPaymentGroupRouter := router.Group("/v1/admin/payment")

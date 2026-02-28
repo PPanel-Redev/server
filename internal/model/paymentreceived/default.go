@@ -114,7 +114,7 @@ func (m *defaultPaymentReceivedModel) Delete(ctx context.Context, id int64, tx .
 		if len(tx) > 0 {
 			conn = tx[0]
 		}
-		return conn.Delete(&PaymentReceived{}, id).Error
+		return conn.Unscoped().Delete(&PaymentReceived{}, id).Error
 	}, m.getCacheKeys(data)...)
 	return err
 }

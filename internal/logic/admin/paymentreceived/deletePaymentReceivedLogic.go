@@ -48,7 +48,7 @@ func (l *DeletePaymentReceivedLogic) DeletePaymentReceived(req *types.DeletePaym
 		return errors.Wrapf(xerr.NewErrCode(xerr.InvalidParams), "payment received not found")
 	}
 
-	// 执行逻辑删除
+	// 执行硬删除
 	err = l.svcCtx.PaymentReceivedModel.Delete(l.ctx, req.Id)
 	if err != nil {
 		l.Logger.Error("[DeletePaymentReceived] Database Error", logger.Field("error", err.Error()))

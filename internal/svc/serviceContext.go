@@ -16,6 +16,7 @@ import (
 	"github.com/perfect-panel/server/internal/model/log"
 	"github.com/perfect-panel/server/internal/model/order"
 	"github.com/perfect-panel/server/internal/model/payment"
+	"github.com/perfect-panel/server/internal/model/paymentreceived"
 	"github.com/perfect-panel/server/internal/model/subscribe"
 	"github.com/perfect-panel/server/internal/model/system"
 	"github.com/perfect-panel/server/internal/model/ticket"
@@ -49,13 +50,14 @@ type ServiceContext struct {
 	ClientModel client.Model
 	TicketModel ticket.Model
 	//ServerModel        server.Model
-	SystemModel       system.Model
-	CouponModel       coupon.Model
-	PaymentModel      payment.Model
-	DocumentModel     document.Model
-	SubscribeModel    subscribe.Model
-	TrafficLogModel   traffic.Model
-	AnnouncementModel announcement.Model
+	SystemModel          system.Model
+	CouponModel          coupon.Model
+	PaymentModel         payment.Model
+	PaymentReceivedModel paymentreceived.Model
+	DocumentModel        document.Model
+	SubscribeModel       subscribe.Model
+	TrafficLogModel      traffic.Model
+	AnnouncementModel    announcement.Model
 
 	Restart               func() error
 	TelegramBot           *tgbotapi.BotAPI
@@ -110,13 +112,14 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		ClientModel: client.NewSubscribeApplicationModel(db),
 		TicketModel: ticket.NewModel(db, rds),
 		//ServerModel:       server.NewModel(db, rds),
-		SystemModel:       system.NewModel(db, rds),
-		CouponModel:       coupon.NewModel(db, rds),
-		PaymentModel:      payment.NewModel(db, rds),
-		DocumentModel:     document.NewModel(db, rds),
-		SubscribeModel:    subscribe.NewModel(db, rds),
-		TrafficLogModel:   traffic.NewModel(db),
-		AnnouncementModel: announcement.NewModel(db, rds),
+		SystemModel:          system.NewModel(db, rds),
+		CouponModel:          coupon.NewModel(db, rds),
+		PaymentModel:         payment.NewModel(db, rds),
+		PaymentReceivedModel: paymentreceived.NewModel(db, rds),
+		DocumentModel:        document.NewModel(db, rds),
+		SubscribeModel:       subscribe.NewModel(db, rds),
+		TrafficLogModel:      traffic.NewModel(db),
+		AnnouncementModel:    announcement.NewModel(db, rds),
 	}
 	srv.DeviceManager = NewDeviceManager(srv)
 	return srv

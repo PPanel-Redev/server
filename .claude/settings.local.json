@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat /Users/weicong/data/code/go/server/etc/ppanel.yaml)",
+      "Bash(mkdir -p /Users/weicong/data/code/go/server/internal/model/paymentreceived)",
+      "Bash(touch /Users/weicong/data/code/go/server/internal/model/paymentreceived/paymentreceived.go)",
+      "Bash(cat /Users/weicong/data/code/go/server/internal/model/paymentreceived/paymentreceived.go)",
+      "Bash(touch /Users/weicong/data/code/go/server/internal/model/paymentreceived/model.go)",
+      "Bash(rm /Users/weicong/data/code/go/server/internal/model/paymentreceived/model.go)",
+      "Bash(mkdir -p /Users/weicong/data/code/go/server/internal/logic/admin/paymentreceived)",
+      "Bash(mkdir -p /Users/weicong/data/code/go/server/internal/handler/admin/paymentreceived)",
+      "Bash(touch /Users/weicong/data/code/go/server/internal/logic/admin/paymentreceived/createPaymentReceivedLogic.go)",
+      "Bash(go build ./...)"
+    ]
+  }
+}

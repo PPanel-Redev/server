@@ -337,6 +337,10 @@ type CreateOrderRequest struct {
 	SubscribeId    int64  `json:"subscribe_id,omitempty"`
 }
 
+type GetFormUserId struct {
+	UserId int64 `form:"user_id,omitempty"`
+}
+
 type CreatePaymentMethodRequest struct {
 	Name        string      `json:"name" validate:"required"`
 	Platform    string      `json:"platform" validate:"required"`
@@ -2802,4 +2806,57 @@ type WithdrawalLog struct {
 	Reason    string `json:"reason,omitempty"`
 	CreatedAt int64  `json:"created_at"`
 	UpdatedAt int64  `json:"updated_at"`
+}
+
+// PaymentReceived 收款方式实体
+type PaymentReceived struct {
+	Id            int64  `json:"id"`
+	UserId        int64  `json:"user_id"`
+	ReceivedType  string `json:"received_type"`
+	ReceivedNo    string `json:"received_no"`
+	BankName      string `json:"bank_name,omitempty"`
+	OpeningBranch string `json:"opening_branch,omitempty"`
+	Qrcode        string `json:"qrcode,omitempty"`
+	CreatedAt     int64  `json:"created_at"`
+	UpdatedAt     int64  `json:"updated_at,omitempty"`
+}
+
+// CreatePaymentReceivedRequest 添加收款方式请求
+type CreatePaymentReceivedRequest struct {
+	ReceivedType  string `json:"received_type" validate:"required,oneof=weixin alipay bankcard"`
+	ReceivedNo    string `json:"received_no" validate:"required"`
+	BankName      string `json:"bank_name,omitempty"`
+	OpeningBranch string `json:"opening_branch,omitempty"`
+	Qrcode        string `json:"qrcode,omitempty"`
+}
+
+// UpdatePaymentReceivedRequest 修改收款方式请求
+type UpdatePaymentReceivedRequest struct {
+	Id            int64  `json:"id" validate:"required"`
+	ReceivedType  string `json:"received_type" validate:"required,oneof=weixin alipay bankcard"`
+	ReceivedNo    string `json:"received_no" validate:"required"`
+	BankName      string `json:"bank_name,omitempty"`
+	OpeningBranch string `json:"opening_branch,omitempty"`
+	Qrcode        string `json:"qrcode,omitempty"`
+}
+
+// DeletePaymentReceivedRequest 删除收款方式请求
+type DeletePaymentReceivedRequest struct {
+	Id int64 `json:"id" validate:"required"`
+}
+
+// GetPaymentReceivedListResponse 查询收款方式列表响应
+type GetPaymentReceivedListResponse struct {
+	List []PaymentReceived `json:"list"`
+}
+
+// PaymentReceivedByType 按类型分组的收款方式
+type PaymentReceivedByType struct {
+	Type string            `json:"type"`
+	List []PaymentReceived `json:"list"`
+}
+
+// GetPaymentReceivedByTypeResponse 按类型分组查询收款方式响应
+type GetPaymentReceivedByTypeResponse struct {
+	ReceivedType []PaymentReceivedByType `json:"received_type"`
 }

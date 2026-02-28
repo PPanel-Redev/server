@@ -16,6 +16,7 @@ import (
 	adminMarketing "github.com/perfect-panel/server/internal/handler/admin/marketing"
 	adminOrder "github.com/perfect-panel/server/internal/handler/admin/order"
 	adminPayment "github.com/perfect-panel/server/internal/handler/admin/payment"
+	"github.com/perfect-panel/server/internal/handler/admin/paymentreceived"
 	adminServer "github.com/perfect-panel/server/internal/handler/admin/server"
 	adminSubscribe "github.com/perfect-panel/server/internal/handler/admin/subscribe"
 	adminSystem "github.com/perfect-panel/server/internal/handler/admin/system"
@@ -276,6 +277,22 @@ func RegisterHandlers(router *gin.Engine, serverCtx *svc.ServiceContext) {
 
 		// Update order status
 		adminOrderGroupRouter.PUT("/status", adminOrder.UpdateOrderStatusHandler(serverCtx))
+	}
+
+	adminPaymentReceivedRouter := router.Group("/v1/admin/paymentReceived")
+	adminPaymentReceivedRouter.Use(middleware.AuthMiddleware(serverCtx))
+
+	{
+		// Create order
+		adminPaymentReceivedRouter.POST("/", paymentreceived.CreatePaymentReceivedHandler(serverCtx))
+
+		adminPaymentReceivedRouter.POST("/del", paymentreceived.DeletePaymentReceivedHandler(serverCtx))
+
+		adminPaymentReceivedRouter.PUT("/", paymentreceived.UpdatePaymentReceivedHandler(serverCtx))
+
+		adminPaymentReceivedRouter.GET("/list", paymentreceived.ListPaymentReceivedHandler(serverCtx))
+
+		adminPaymentReceivedRouter.GET("/listByType", paymentreceived.ListPaymentReceivedByTypeHandler(serverCtx))
 	}
 
 	adminPaymentGroupRouter := router.Group("/v1/admin/payment")

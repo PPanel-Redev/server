@@ -1,0 +1,39 @@
+Host: 0.0.0.0
+Port: 8080
+TLS:
+  Enable: false
+  CertFile: ""
+  KeyFile: ""
+Debug: false
+JwtAuth:
+  AccessSecret: 1b5648f4-982e-477f-87a8-ffc7ffafebe1
+  AccessExpire: 604800
+Logger:
+  ServiceName: PPanel
+  Mode: file
+  Encoding: json
+  TimeFormat: "2006-01-02 15:04:05.000"
+  Path: logs
+  Level: info
+  MaxContentLength: 0
+  Compress: false
+  Stat: true
+  KeepDays: 0
+  StackCooldownMillis: 100
+  MaxBackups: 0
+  MaxSize: 0
+  Rotation: daily
+  FileTimeFormat: 2006-01-02T15:04:05.000Z07:00
+MySQL:
+  Addr: localhost:3309
+  Username: root
+  Password: nightOwl.123
+  Dbname: ppanel
+  Config: charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  SlowThreshold: 1000
+Redis:
+  Host: 127.0.0.1:6380
+  Pass: nightOwl.123
+  DB: 0
